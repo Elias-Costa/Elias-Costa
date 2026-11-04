@@ -1,44 +1,64 @@
 # Elias Rodrigues
 
-**Engenheiro de Software · Full Stack** — Java · Spring Boot · TypeScript · Node.js · React · PostgreSQL
+**Engenheiro de Software** · Backend, sistemas transacionais e aplicações offline.
 
-Bacharel em Ciência da Computação pela UFS. Construo produtos completos que rodam em produção — da modelagem do banco e das regras de negócio à interface que o usuário toca. Minha base é backend: controle de acesso por papéis, consistência transacional, performance. O frontend veio pelos produtos próprios, em React e Next.js, e hoje faz parte do que entrego de ponta a ponta. Antes disso, dois anos de pesquisa em Machine Learning (PIBIC), com artigo publicado na ERBASE 2025.
+Desenvolvo e mantenho produtos da modelagem do domínio à implantação, com foco em consistência de dados, segurança e recuperação de falhas. Minha base é backend; também construo as interfaces e cuido da operação dos produtos próprios.
 
-**Disponível para início imediato em posições remotas full stack ou backend.**
+Bacharel em Ciência da Computação pela UFS, com experiência em sistemas institucionais e dois anos de pesquisa em Machine Learning.
 
-[elias-costa.github.io](https://elias-costa.github.io/) · [LinkedIn](https://www.linkedin.com/in/elias-rodrigues-288450254/) · [ecrprofessional@gmail.com](mailto:ecrprofessional@gmail.com)
+**Disponível para início imediato em posições remotas de Engenharia de Software.**
 
-## Agora
+[Portfólio](https://elias-costa.github.io/) · [LinkedIn](https://www.linkedin.com/in/elias-rodrigues-288450254/) · [E-mail](mailto:ecrprofessional@gmail.com)
 
-Mantenho o **[SiteHealth](https://site-health-ten.vercel.app)**, um SaaS de monitoramento técnico de sites, no ar desde julho de 2026. Faz crawl periódico dos sites cadastrados e envia por e-mail um relatório priorizado do que afeta SEO e experiência do usuário: links e imagens quebrados, conteúdo misto, bloqueio acidental de indexação, certificado e domínio prestes a vencer.
+## Projetos em destaque
 
-É produto próprio, do banco à tela — arquitetura, segurança, interface e operação são decisões minhas: Next.js e React no front, isolamento multi-tenant por RLS no banco, guarda de SSRF em todos os caminhos de saída, limite de taxa atômico no Postgres, 679 testes automatizados. O código é privado; o caso completo, com as decisões e a evidência de cada uma, está [no site](https://elias-costa.github.io/#sitehealth).
+### [ECRX Caixa](https://caixa.ecrxtecnologia.com.br/)
 
-## Projetos
+Sistema de caixa e vendas para pequenos negócios. Reúne vendas, caixa, estoque, fiado e relatórios, com PWA que permite continuar o atendimento sem internet. Cuido do produto, da modelagem de domínio, do backend, da interface e da operação.
 
-**[caixa-simples](https://github.com/Elias-Costa/caixa-simples)** — `Java 21 · Spring Boot 4 · Spring Modulith · PostgreSQL · Testcontainers`
-PDV multi-tenant para pequenos negócios, construído como monolito modular. A fronteira entre os módulos é verificada por teste, cada tabela tem teste de isolamento entre contas, e a regra de negócio vive em classes sem Spring nem JPA. Em desenvolvimento.
+- **Monolito modular:** Java, Spring Boot e Spring Modulith, com domínio independente de framework e fronteiras verificadas por teste.
+- **Sincronização idempotente:** operações nascem no aparelho; o servidor grava o resultado na mesma transação do efeito, permitindo reenvio após perda da resposta.
+- **Dados e acesso:** PostgreSQL, isolamento entre contas, autorização por perfil e testes contra banco real com Testcontainers.
+- **Operação própria:** VPS no Brasil, Docker, CI no GitHub Actions, monitoramento e backups horários do PostgreSQL, cifrados antes do envio ao **Amazon S3**, com restauração ensaiada.
 
-**[invoice-microservices](https://github.com/Elias-Costa/invoice-microservices)** — `Java 21 · Spring Boot 4 · Apache Kafka · PostgreSQL · Testcontainers · Docker Compose`
-Emissão de notas fiscais em microsserviços: um banco por serviço, consulta síncrona entre eles e toda mudança de estado por evento, com Saga coordenada por outbox. Comecei pela fundação compartilhada — erros em Problem Details (RFC 9457), idempotência HTTP por `Idempotency-Key`, transactional outbox e guarda contra evento reprocessado no consumidor — cada peça provada contra Postgres e Kafka reais via Testcontainers. Cada decisão está registrada em ADR ou num log numerado. Em desenvolvimento; os serviços de estoque e faturamento e o frontend em Angular vêm em seguida.
+**Estado:** implantado e em preparação para o piloto. A integração Pix ainda aguarda homologação com o provedor.
 
-**[controle-estoque-gastos](https://github.com/Elias-Costa/controle-estoque-gastos)** — `TypeScript · React · Tailwind · PWA · Supabase (Postgres + RLS) · Dexie · Bun · Playwright`
-PWA offline-first que substitui o caderno de fiado de quem revende cosméticos por conta própria. Toda escrita vai primeiro ao banco local do aparelho e sobe por uma fila com ids UUIDv7 gerados no dispositivo, o que torna o reenvio idempotente por construção; lançamento financeiro é imutável (correção é estorno) e dinheiro é `bigint` de centavos. As invariantes financeiras e o isolamento por conta valem no próprio Postgres, e uma suíte tenta violá-las contornando o app. As telas foram desenhadas contra um protótipo cronometrado, para o celular, e provadas em iPhone real e no Chromium contra o build de produção: venda sem rede que sobrevive a recarregar, reenvio que não duplica, dois aparelhos que convergem. Fase 1 (fichas, fiado e cobrança) pronta.
+[Produto no ar](https://caixa.ecrxtecnologia.com.br/) · [Código](https://github.com/Elias-Costa/ecrx-caixa)
 
-**[som-ae](https://github.com/Elias-Costa/som-ae)** — `Python · PyTorch · NumPy`
-Mapas auto-organizáveis em que cada neurônio é um autoencoder convolucional. Protótipo da pesquisa de Iniciação Científica; o artigo *Mapas Auto-Organizáveis e Autoencoders* saiu nos anais da ERBASE 2025, publicados pela SBC ([DOI](https://doi.org/10.5753/erbase.2025.13757)).
+### Fichinhas
 
-**Validação de conformidade com a LGPD** — `Node.js · TypeScript · PostgreSQL`
-Sistema institucional da UFS, em produção. Desenvolvi as APIs, modelei o banco relacional e implementei regras de negócio alinhadas a requisitos legais. Código privado por lidar com dados sensíveis.
+PWA de fiado e estoque construído para uma revendedora de cosméticos, com uso real. Organiza fichas, vendas, parcelas e recebimentos; evoluiu com estoque integrado às vendas, fotos e catálogo PDF para compartilhar no WhatsApp.
 
-## Stack
+React, TypeScript e Dexie/IndexedDB no aparelho; Supabase/PostgreSQL na nuvem. Registro e fila são gravados na mesma transação local, com identidade gerada no dispositivo. Dinheiro é `bigint` de centavos, correções preservam o histórico e as invariantes financeiras também valem no banco.
 
-| | |
+**Estado:** fichas, fiado e estoque em uso real. Gastos, cópia completa, textos editáveis e lembretes foram publicados na atualização de novembro; a conferência dessa atualização no aparelho está em andamento.
+
+[Código](https://github.com/Elias-Costa/controle-estoque-gastos)
+
+### [SiteHealth](https://site-health-ten.vercel.app)
+
+SaaS de monitoramento técnico de sites. Faz varreduras periódicas e envia relatórios priorizados por e-mail sobre problemas que afetam SEO e experiência do usuário.
+
+Next.js, TypeScript, Supabase, Inngest, Resend e Sentry. O trabalho de engenharia inclui processamento assíncrono em lotes com checkpoint, isolamento por RLS, proteção de SSRF e limites de taxa atômicos no PostgreSQL, com validação em sites reais.
+
+**Estado:** no ar, em pré-lançamento, com cobrança em modo de teste. Código privado; posso apresentar a arquitetura em conversa técnica.
+
+[Produto no ar](https://site-health-ten.vercel.app)
+
+## Experiência e pesquisa
+
+- **SergipeTec — Desenvolvedor Backend** · Estágio, mai–jul/2026. APIs em Java/Spring Boot, regras transacionais e otimização de endpoints de 8 s para 300 ms.
+- **STI/UFS — Desenvolvedor Backend** · abr/2025–fev/2026. APIs em Node.js/TypeScript, modelagem PostgreSQL e regras de negócio do **LGPDefender**, sistema institucional de inventários de dados pessoais. Sou coautor do software, registrado no INPI (BR512026006717-0).
+- **UFS — Iniciação Científica (PIBIC)** · set/2023–set/2025. Modelos e experimentação em Machine Learning com PyTorch. Coautor de *Mapas Auto-Organizáveis e Autoencoders*, publicado na ERBASE 2025 pela SBC. [Artigo](https://doi.org/10.5753/erbase.2025.13757) · [Código SOM-AE](https://github.com/Elias-Costa/som-ae).
+
+## Stack e práticas
+
+| Área | Tecnologias e práticas |
 |---|---|
-| **Backend** | Java, Spring Boot, Node.js, TypeScript, Python, FastAPI, APIs REST, Apache Kafka |
-| **Frontend** | React, Next.js, Tailwind CSS, Vite, PWA (service worker, IndexedDB), HTML/CSS |
-| **Dados** | PostgreSQL, MongoDB, SQL, SQLAlchemy, Supabase |
-| **Segurança & arquitetura** | RBAC, autenticação JWT, Row Level Security, lógica transacional, arquitetura em camadas, monolito modular, microsserviços, idempotência, transactional outbox, offline-first |
-| **Testes** | JUnit, Testcontainers, Vitest, Playwright, testes de integração contra banco real |
-| **Infraestrutura** | Docker, Docker Compose, Gradle, Maven, Git, Linux, AWS (EC2, S3, RDS), Vercel |
-| **Machine Learning** | PyTorch, Scikit-learn |
+| **Backend e dados** | Java, Spring Boot, Node.js, TypeScript, Python, APIs REST, PostgreSQL, SQL, Supabase |
+| **Arquitetura e confiabilidade** | Modelagem de domínio, monolito modular, Spring Modulith, consistência transacional, idempotência, offline-first |
+| **Segurança** | RBAC, autenticação JWT, Row Level Security, isolamento entre contas |
+| **Interface e PWA** | React, Next.js, Tailwind CSS, Vite, service worker, IndexedDB, Dexie, HTML/CSS |
+| **Testes** | JUnit, Testcontainers, Bun Test, Vitest, Playwright, integração contra banco real |
+| **Operação** | Docker, Docker Compose, GitHub Actions, Git, Linux, VPS, AWS (EC2, RDS), **Amazon S3 (backups cifrados)**, Vercel, backup e restauração |
+| **Machine Learning** | PyTorch, Scikit-learn, experimentação |
