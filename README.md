@@ -18,20 +18,21 @@ Sistema de caixa e vendas para pequenos negócios. Reúne vendas, caixa, estoque
 
 - **Monolito modular:** Java, Spring Boot e Spring Modulith, com domínio independente de framework e fronteiras verificadas por teste.
 - **Sincronização idempotente:** operações nascem no aparelho; o servidor grava o resultado na mesma transação do efeito, permitindo reenvio após perda da resposta.
-- **Dados e acesso:** PostgreSQL, isolamento entre contas, autorização por perfil e testes contra banco real com Testcontainers.
-- **Operação própria:** VPS no Brasil, Docker, CI no GitHub Actions, monitoramento e backups horários do PostgreSQL, cifrados antes do envio ao **Amazon S3**, com restauração ensaiada.
+- **Pix com dois provedores:** Efí e Inter atrás de uma interface única, escolhida por Conta; o servidor reconsulta a cobrança no provedor antes de confirmar o pagamento.
+- **Dados e acesso:** PostgreSQL, isolamento entre contas e autorização por perfil, com mais de 900 testes automatizados e os de banco contra PostgreSQL real, via Testcontainers.
+- **Operação própria:** VPS no Brasil, Docker, CI no GitHub Actions, monitoramento e backups horários do PostgreSQL, cifrados antes do envio ao **Amazon S3**, com restauração ensaiada. O resumo de cada caixa fechado vai por e-mail pelo **Amazon SES**, por um outbox que impede uma falha no envio de desfazer o fechamento.
 
-**Estado:** implantado e em preparação para o piloto. A integração Pix ainda aguarda homologação com o provedor.
+**Estado:** implantado e em preparação para o piloto, por enquanto só com contas de teste. O Pix integrado já foi exercitado no ambiente de testes do Inter; a Efí ainda aguarda as credenciais de homologação.
 
 [Produto no ar](https://caixa.ecrxtecnologia.com.br/) · [Código](https://github.com/Elias-Costa/ecrx-caixa)
 
 ### Fichinhas
 
-PWA de fiado e estoque construído para uma revendedora de cosméticos, com uso real. Organiza fichas, vendas, parcelas e recebimentos; evoluiu com estoque integrado às vendas, fotos e catálogo PDF para compartilhar no WhatsApp.
+PWA de fiado e estoque construído para uma revendedora de cosméticos, com uso real. Organiza fichas, vendas, parcelas e recebimentos; evoluiu com estoque integrado às vendas, fotos, catálogo PDF para compartilhar no WhatsApp e um resumo com o que há a receber, o lucro do mês e os produtos encalhados.
 
 React, TypeScript e Dexie/IndexedDB no aparelho; Supabase/PostgreSQL na nuvem. Registro e fila são gravados na mesma transação local, com identidade gerada no dispositivo. Dinheiro é `bigint` de centavos, correções preservam o histórico e as invariantes financeiras também valem no banco.
 
-**Estado:** fichas, fiado e estoque em uso real. Gastos, cópia completa, textos editáveis e lembretes foram publicados na atualização de novembro; a conferência dessa atualização no aparelho está em andamento.
+**Estado:** fichas, fiado e estoque em uso real. Gastos, cópia completa, textos editáveis, lembretes, a cópia diária no Google Drive e o Resumo chegaram em novembro e já foram conferidos no aparelho.
 
 [Código](https://github.com/Elias-Costa/controle-estoque-gastos)
 
@@ -45,6 +46,18 @@ Next.js, TypeScript, Supabase, Inngest, Resend e Sentry. O trabalho de engenhari
 
 [Produto no ar](https://site-health-ten.vercel.app)
 
+## Outros projetos
+
+### [invoice-microservices](https://github.com/Elias-Costa/invoice-microservices)
+
+Fechamento de notas fiscais internas em microsserviços. Estoque e faturamento têm cada um seu banco, e o fechamento da nota é uma Saga por eventos no Kafka: o faturamento pede a baixa, e a nota fecha quando o estoque confirma ou volta a ficar aberta, com o motivo, se faltar saldo.
+
+Java 21, Spring Boot 4, Spring Cloud Gateway, Apache Kafka, PostgreSQL e frontend Angular 22, tudo em Docker Compose. Outbox transacional, idempotência HTTP por `Idempotency-Key`, consumidor que não reprocessa e bloqueio otimista no saldo, com 399 testes no backend, 124 deles de integração contra PostgreSQL e Kafka reais via Testcontainers, e as fronteiras da arquitetura hexagonal verificadas com ArchUnit.
+
+**Estado:** `v0.1.0` publicada como demonstração local, com cinco roteiros automatizados (fluxo feliz, saldo insuficiente, concorrência, idempotência e queda do estoque). Sem login e sem integração com a SEFAZ.
+
+[Código](https://github.com/Elias-Costa/invoice-microservices)
+
 ## Experiência e pesquisa
 
 - **SergipeTec — Desenvolvedor Backend** · Estágio, mai–jul/2026. APIs em Java/Spring Boot, regras transacionais e otimização de endpoints de 8 s para 300 ms.
@@ -55,10 +68,10 @@ Next.js, TypeScript, Supabase, Inngest, Resend e Sentry. O trabalho de engenhari
 
 | Área | Tecnologias e práticas |
 |---|---|
-| **Backend e dados** | Java, Spring Boot, Node.js, TypeScript, Python, APIs REST, PostgreSQL, SQL, Supabase |
-| **Arquitetura e confiabilidade** | Modelagem de domínio, monolito modular, Spring Modulith, consistência transacional, idempotência, offline-first |
+| **Backend e dados** | Java, Spring Boot, Spring Data JPA/Hibernate, Spring Security, Spring Cloud Gateway, Node.js, TypeScript, Python, APIs REST, PostgreSQL, SQL, Flyway, Supabase |
+| **Arquitetura e confiabilidade** | Modelagem de domínio, monolito modular, Spring Modulith, arquitetura hexagonal, microsserviços, Apache Kafka, Saga, outbox transacional, consistência transacional, idempotência, offline-first |
 | **Segurança** | RBAC, autenticação JWT, Row Level Security, isolamento entre contas |
-| **Interface e PWA** | React, Next.js, Tailwind CSS, Vite, service worker, IndexedDB, Dexie, HTML/CSS |
-| **Testes** | JUnit, Testcontainers, Bun Test, Vitest, Playwright, integração contra banco real |
-| **Operação** | Docker, Docker Compose, GitHub Actions, Git, Linux, VPS, AWS (EC2, RDS), **Amazon S3 (backups cifrados)**, Vercel, backup e restauração |
+| **Interface e PWA** | React, Angular, Next.js, Tailwind CSS, Vite, service worker, IndexedDB, Dexie, HTML/CSS |
+| **Testes** | JUnit, Mockito, Testcontainers, ArchUnit, Bun Test, Vitest, Playwright, integração contra banco real |
+| **Operação** | Docker, Docker Compose, Maven, GitHub Actions, Git, Linux, VPS, AWS (EC2, RDS), **Amazon S3 (backups cifrados)**, Amazon SES, Vercel, backup e restauração |
 | **Machine Learning** | PyTorch, Scikit-learn, experimentação |
